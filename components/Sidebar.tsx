@@ -12,6 +12,21 @@ export default function Sidebar() {
             <Image fill alt="logo" src="/logo.png" className="" />
           </div>
         </Link>
+        <Link href="/logout" className="flex items-center pl-3 mb-14">
+          <div className="relative w-8 h-8 mr-4">
+            <Image fill alt="logo" src="/logo.png" className="" />
+          </div>
+        </Link>
+        <Link href="/signup" className="flex items-center pl-3 mb-14">
+          <div className="relative w-8 h-8 mr-4">
+            <Image fill alt="logo" src="/logo.png" className="" />
+          </div>
+        </Link>
+        <Link href="/signin" className="flex items-center pl-3 mb-14">
+          <div className="relative w-8 h-8 mr-4">
+            <Image fill alt="logo" src="/logo.png" className="" />
+          </div>
+        </Link>
       </div>
     </div>
   );
