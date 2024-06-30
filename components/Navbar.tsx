@@ -11,6 +11,12 @@ export default function Navbar() {
       <div className="flex w-full justify-end">
         <UserButton afterSignOutUrl="/" />
       </div>
+      <Button variant="ghost" size="icon" className="md:hidden">
+        <Menu />
+      </Button>
+      <div className="flex w-full justify-end">
+        <UserButton afterSignOutUrl="/" />
+      </div>
     </div>
   );
 }
