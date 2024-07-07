@@ -9,12 +9,12 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { useRouter } from "@/node_modules/next/navigation";
-import { chatCompletionRequestMessage } from "openai";
+import { useRouter } from "next/navigation";
+import { ChatCompletionRequestMessage } from "openai";
 import { useState } from "react";
 
 export default function ConversationPage() {
-  const [messages, setMessages] = useState<chatCompletionRequestMessage[]>([]);
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,7 +27,7 @@ export default function ConversationPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: chatCompletionRequestMessage = {
+      const userMessage: ChatCompletionRequestMessage = {
         role: "user",
         content: values.prompt,
       };
@@ -41,7 +41,6 @@ export default function ConversationPage() {
 
       form.reset();
     } catch (error: any) {
-      // TODO: Open Pro model
       console.log(error);
     } finally {
       router.refresh();
