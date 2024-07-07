@@ -8,8 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useRouter } from "@/node_modules/next/navigation";
+import { chatCompletionRequestMessage } from "openai";
+import { useState } from "react";
 
 export default function ConversationPage() {
+  const [messages, setMessages] = useState<chatCompletionRequestMessage[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -17,10 +22,30 @@ export default function ConversationPage() {
     },
   });
 
+  const router = useRouter();
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const userMessage: chatCompletionRequestMessage = {
+        role: "user",
+        content: values.prompt,
+      };
+      const newMessages = [...messages, userMessage];
+
+      const response = await axios.post("/api/conversation", {
+        messages: newMessages,
+      });
+
+      setMessages((current) => [...current, userMessage, response.data]);
+
+      form.reset();
+    } catch (error: any) {
+      // TODO: Open Pro model
+      console.log(error);
+    } finally {
+      router.refresh();
+    }
   };
   return (
     <div>
@@ -62,7 +87,13 @@ export default function ConversationPage() {
             </form>
           </Form>
         </div>
-        <div>Messages Output Content</div>
+        <div className="space-y-4 mt-4">
+          <div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message) => (
+              <div key={message.content}>{message.content}</div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
