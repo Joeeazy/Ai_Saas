@@ -33,10 +33,11 @@ export default function ConversationPage() {
       };
       const newMessages = [...messages, userMessage];
 
+      console.log("Sending request to API with messages: ", newMessages);
       const response = await axios.post("/api/conversation", {
         messages: newMessages,
       });
-
+      console.log("API response received: ", response.data);
       setMessages((current) => [...current, userMessage, response.data]);
 
       form.reset();
@@ -88,8 +89,8 @@ export default function ConversationPage() {
         </div>
         <div className="space-y-4 mt-4">
           <div className="flex flex-col-reverse gap-y-4">
-            {messages.map((message) => (
-              <div key={message.content}>{message.content}</div>
+            {messages.map((message, index) => (
+              <div key={index}>{message.content}</div>
             ))}
           </div>
         </div>
