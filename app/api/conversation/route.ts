@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { OpenAI } from "openai";
+import OpenAI from "openai";
 import { auth } from "@clerk/nextjs";
 
 const openai = new OpenAI({
@@ -12,7 +12,7 @@ export async function POST(req: Request) {
   try {
     console.log("Processing request...");
 
-    const { userId } = auth(); // Ensure you are using the correct auth function from Clerk
+    const { userId } = await auth(); // Ensure you are using the correct auth function from Clerk
 
     const body = await req.json();
     const { messages } = body;
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     // Check if OpenAI API key is properly configured
-    if (!process.env.OPENAI_API_KEY) {
+    if (!openai.apiKey) {
       console.error("OpenAI API Key Not configured");
       return new NextResponse("OpenAI API Key Not configured", { status: 500 });
     }
